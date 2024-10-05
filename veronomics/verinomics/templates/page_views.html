@@ -1,0 +1,20 @@
+<h1>Page View Stats</h1>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Page URL</th>
+    <th>IP Address</th>
+    <th>User Agent</th>
+    <th>Timestamp</th>
+  </tr>
+  {% for view in views %}
+  <tr>
+    <td>{{ view.user }}</td>
+    <td>{{ view.page_url }}</td>
+    <td>{{ view.ip_address }}</td>
+    <td>{{ view.user_agent }}</td>
+    <td>{{ view.timestamp }}</td>
+  </tr>
+  {% endfor %}
+</table>
