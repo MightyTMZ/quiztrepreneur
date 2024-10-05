@@ -36,7 +36,7 @@ const Quiz: React.FC = () => {
 
   console.log(filteredQuestions);
 
-  const backendServerAddress = "https://econchamp.pythonanywhere.com";
+  const backendServerAddress = "https://quiztrepreneur.pythonanywhere.com";
 
   useEffect(() => {
     fetchCategories();
