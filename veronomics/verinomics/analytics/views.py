@@ -39,4 +39,4 @@ class IncrementViewsView(View):
         counter.number_of_views += 1 
         counter.save()  # Save the updated record
 
-        return JsonResponse({'count': counter.count})
+        return JsonResponse({'count': counter.number_of_views})

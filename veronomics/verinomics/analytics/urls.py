@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     path("insights/", views.page_stats), 
-    path("increment-view/", views.IncrementViewsView),
+    path("increment-view/", views.IncrementViewsView.as_view()),
 ]

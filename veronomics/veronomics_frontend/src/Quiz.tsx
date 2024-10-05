@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { IoIosInformationCircle } from "react-icons/io";
+
 import axios from "axios";
 import "./Quiz.css";
-// import NavBar from "./NavBar";
-// import Footer from "./Footer";
 
 interface Option {
   option_text: string;
@@ -27,16 +27,16 @@ const Quiz: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>("");
-  // const [questions, setQuestions] = useState<Question[]>([]);
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
   const [question, setQuestion] = useState<Question | null>(null);
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [feedback, setFeedback] = useState<string>("");
   const [showExplanation, setShowExplanation] = useState<boolean>(false);
-
-  const backendServerAddress = "https://econchamp.pythonanywhere.com";
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false); // State for dark mode
 
   console.log(filteredQuestions);
+
+  const backendServerAddress = "https://econchamp.pythonanywhere.com";
 
   useEffect(() => {
     fetchCategories();
@@ -80,6 +80,17 @@ const Quiz: React.FC = () => {
     }
   };
 
+  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      // Select all categories
+      const allCategoryTitles = categories.map((category) => category.title);
+      setSelectedCategories(allCategoryTitles);
+    } else {
+      // Deselect all categories
+      setSelectedCategories([]);
+    }
+  };
+
   const handleDifficultyChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -93,7 +104,6 @@ const Quiz: React.FC = () => {
       allQuestions = [...allQuestions, ...questionsForCategory];
     }
 
-    // Filter by difficulty
     const difficultyFilteredQuestions = allQuestions.filter(
       (question) =>
         !selectedDifficulty || question.difficulty === selectedDifficulty
@@ -101,7 +111,6 @@ const Quiz: React.FC = () => {
 
     setFilteredQuestions(difficultyFilteredQuestions);
 
-    // Pick a random question
     if (difficultyFilteredQuestions.length > 0) {
       const randomIndex = Math.floor(
         Math.random() * difficultyFilteredQuestions.length
@@ -143,17 +152,61 @@ const Quiz: React.FC = () => {
 
   return (
     <>
-      <div className="container mt-5 afacad-flux">
-        <h1 className="text-center mb-4" style={{ letterSpacing: "3px", fontWeight: 'bold' }}>Quiztrepreneur</h1>
-        <div className="container mt-5">
-          {/* Filter Display */}
-          <div className="filter-container mb-4 border rounded p-3 bg-light">
+      <div
+        className={`container mt-5 afacad-flux ${
+          isDarkMode ? "dark-mode" : "light-mode"
+        }`}
+      >
+        <h1
+          className="text-center mb-4 crypto-font"
+          style={{ letterSpacing: "3px", fontWeight: "400" }}
+        >
+          QUIZTREPRENEUR
+        </h1>
+
+        {/* Dark Mode Toggle */}
+        <div className="text-center mb-4">
+          <button
+            className="btn btn-secondary toggle-switch"
+            style={{ fontWeight: "bold" }}
+            onClick={() => setIsDarkMode((prev) => !prev)}
+          >
+            {isDarkMode ? "LIGHT" : "DARK"} MODE
+          </button>
+        </div>
+
+        <div className="container mt-5 libre-baskerville-bold">
+          <blockquote>
+            “Most of what I learned as an entrepreneur was by trial and error.”
+            <footer>— Gordon Moore</footer>
+            <div style={{ height: "30px" }}></div>
+          </blockquote>
+
+          <div className={isDarkMode ? "Light" : "Dark"}>
             {/* Dynamic Categories */}
             <div className="category-dropdown mb-3">
-              <h2 >Category:</h2>
+              <h2>Category:</h2>
               <div className="category-grid">
+                <label
+                  key="1"
+                  id="selectAllButton"
+                  className="category"
+                  style={{ marginRight: "16px" }}
+                >
+                  <input
+                    type="checkbox"
+                    value={"All"}
+                    checked={selectedCategories.length === categories.length} // Check if all categories are selected
+                    onChange={handleSelectAll}
+                  />
+                  All topics
+                </label>
                 {categories.map((category, index) => (
-                  <label key={index} className="category">
+                  <label
+                    key={index}
+                    className="category"
+                    style={{ marginRight: "16px" }}
+                  >
                     <input
                       type="checkbox"
                       value={category.title}
@@ -167,14 +220,19 @@ const Quiz: React.FC = () => {
             </div>
             {/* Difficulty Filter */}
             <div className="mb-3">
-              <label htmlFor="difficultySelect" className="form-label">
+              <label
+                htmlFor="difficultySelect"
+                className="form-label libre-baskerville-bold"
+              >
                 <h2>Difficulty:</h2>
               </label>
               <select
                 id="difficultySelect"
                 value={selectedDifficulty}
                 onChange={handleDifficultyChange}
-                className="form-select"
+                className={
+                  isDarkMode ? "form-select Light" : "form-select Dark"
+                }
               >
                 <option value="">All Difficulties</option>
                 <option value="E">Easy</option>
@@ -182,6 +240,9 @@ const Quiz: React.FC = () => {
                 <option value="H">Hard</option>
               </select>
             </div>
+            <p>
+              <IoIosInformationCircle /> Make sure to select a topic
+            </p>
             <button className="btn btn-primary" onClick={handleFilterQuestions}>
               Give me practice!
             </button>
@@ -189,9 +250,15 @@ const Quiz: React.FC = () => {
         </div>
         {/* Display Question */}
         {question ? (
-          <div className="card shadow-sm border-light p-4">
+          <div
+            className={
+              isDarkMode
+                ? "shadow-sm p-4 dark-card libre-baskerville-regular"
+                : "shadow-sm p-4 border-light libre-baskerville-regular"
+            }
+          >
             <h2
-              className="card-title mb-4"
+              className={`card-title mb-4 ${isDarkMode ? "text-white" : ""}`}
               dangerouslySetInnerHTML={{ __html: question.question_text }}
             />
             <form onSubmit={handleSubmit}>
@@ -207,13 +274,15 @@ const Quiz: React.FC = () => {
                     onChange={handleOptionChange}
                   />
                   <label
-                    className="form-check-label"
+                    className={`form-check-label ${
+                      isDarkMode ? "text-white" : ""
+                    }`}
                     htmlFor={`option${index}`}
                     dangerouslySetInnerHTML={{ __html: option.option_text }}
                   />
                 </div>
               ))}
-              <button type="submit" className="btn btn-primary btn-lg w-100">
+              <button type="submit" className={`btn btn-primary btn-lg w-100`}>
                 Submit
               </button>
             </form>
@@ -223,12 +292,16 @@ const Quiz: React.FC = () => {
                   feedback.startsWith("Correct")
                     ? "alert-success"
                     : "alert-danger"
-                }`}
+                } ${isDarkMode ? "dark-alert" : ""}`}
                 dangerouslySetInnerHTML={{ __html: feedback }}
               ></div>
             )}
             {showExplanation && question.explanation && (
-              <div className="mt-3 alert alert-info">
+              <div
+                className={`mt-3 alert alert-info ${
+                  isDarkMode ? "dark-alert-info" : ""
+                }`}
+              >
                 <strong>Explanation:</strong>{" "}
                 <span
                   dangerouslySetInnerHTML={{ __html: question.explanation }}
@@ -237,7 +310,9 @@ const Quiz: React.FC = () => {
             )}
             {showExplanation && (
               <button
-                className="btn btn-secondary mt-3"
+                className={`btn btn-secondary mt-3 ${
+                  isDarkMode ? "dark-btn" : ""
+                }`}
                 onClick={handleNextQuestion}
               >
                 Next Question
@@ -246,7 +321,9 @@ const Quiz: React.FC = () => {
           </div>
         ) : (
           <div className="text-center">
-            <p>No questions found or loading...</p>
+            <p className={isDarkMode ? "text-white" : ""}>
+              No questions found or loading...
+            </p>
           </div>
         )}
       </div>
