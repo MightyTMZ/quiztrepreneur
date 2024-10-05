@@ -1,6 +1,7 @@
 /* General Styles */
 body {
   transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for background and text color */
+  font-family: "Poppins", sans-serif;
 }
 
 @font-face {
@@ -21,14 +22,14 @@ body {
 .crypto-font {
   font-family: crypto;
 }
-
+/*
 .libre-baskerville-regular {
   font-family: libre-baskerville-regular;
 }
 
 .libre-baskerville-bold {
   font-family: libre-baskerville-bold;
-}
+}*/
 
 .toggle-switch {
   font-family: 'Courier New', Courier, monospace;
