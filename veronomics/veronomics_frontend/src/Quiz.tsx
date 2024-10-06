@@ -35,6 +35,7 @@ const Quiz: React.FC = () => {
   const [showExplanation, setShowExplanation] = useState<boolean>(false);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false); // State for dark mode
   const [loading, setLoading] = useState(false);
+  const [noneFound, setNoneFound] = useState(false);
   const [views, setViews] = useState("-");
 
   if (filteredQuestions) {
@@ -153,6 +154,11 @@ const Quiz: React.FC = () => {
       setQuestion(null);
     }
     setLoading(false);
+    if (filteredQuestions.length == 0) {
+      setNoneFound(true);
+    } else {
+      setNoneFound(false);
+    }
   };
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -186,6 +192,41 @@ const Quiz: React.FC = () => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    const body = document.body;
+    if (isDarkMode) {
+      body.classList.add("dark-mode-body");
+    } else {
+      body.classList.remove("dark-mode-body");
+    }
+  }, [isDarkMode]);
+
+  console.log(views);
+
+  // localStorage.setItem("darkModeEnabled", "false");
+
+  //if (isDarkMode) {
+  // localStorage.setItem("darkModeEnabled", "true");
+  // } else {
+  // localStorage.setItem("darkModeEnabled", "false");
+  // }
+
+  const rootHTML = document.getElementsByTagName("html")[0];
+  const rootReactDiv = document.getElementById('root');
+
+
+  if (isDarkMode) {
+    if (rootHTML && rootReactDiv) {
+      rootHTML.style.background = "#333";
+      rootReactDiv.style.background = "#333";
+    }
+  } else {
+    if (rootHTML && rootReactDiv) {
+      rootHTML.style.background = "#fff";
+      rootReactDiv.style.background = "#fff";
+    }
+  }
+
   return (
     <>
       {loading ? (
@@ -193,7 +234,7 @@ const Quiz: React.FC = () => {
       ) : (
         <>
           <div
-            className={`container mt-5 afacad-flux ${
+            className={`container afacad-flux mt-5 ${
               isDarkMode ? "dark-mode" : "light-mode"
             }`}
           >
@@ -234,7 +275,9 @@ const Quiz: React.FC = () => {
                       <input
                         type="checkbox"
                         value={"All"}
-                        checked={selectedCategories.length === categories.length} // Check if all categories are selected
+                        checked={
+                          selectedCategories.length === categories.length
+                        } // Check if all categories are selected
                         onChange={handleSelectAll}
                       />
                       All topics
@@ -299,7 +342,9 @@ const Quiz: React.FC = () => {
                 }
               >
                 <h2
-                  className={`card-title mb-4 ${isDarkMode ? "text-white" : ""}`}
+                  className={`card-title mb-4 ${
+                    isDarkMode ? "text-white" : ""
+                  }`}
                   dangerouslySetInnerHTML={{ __html: question.question_text }}
                 />
                 <form onSubmit={handleSubmit}>
@@ -366,14 +411,15 @@ const Quiz: React.FC = () => {
             ) : (
               <div className="text-center">
                 <p className={isDarkMode ? "text-white" : ""}>
-                  No questions found or loading...
+                  {noneFound
+                    ? "No questions found..."
+                    : "Select a topic to begin practicing..."}
                 </p>
               </div>
             )}
           </div>
-          <div className="container">Views: {views}</div>
+          {/*<div className="container">Views: {views}</div>*/}
         </>
-      
       )}
     </>
   );

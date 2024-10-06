@@ -1,5 +1,6 @@
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Quiz from "./Quiz";
+// import QuizScreen from "./QuizScreen";
 
 function App() {
   return (
