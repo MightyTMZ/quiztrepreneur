@@ -58,13 +58,13 @@
 .object1 {
   top: 50%;
   left: 50%;
-  animation: orbit1 8s linear infinite;
+  animation: orbit1 0.5s linear infinite;
 }
 
 .object2 {
   top: 50%;
   left: 50%;
-  animation: orbit2 12s linear infinite;
+  animation: orbit2 0.75s linear infinite;
 }
 
 @keyframes spin {
