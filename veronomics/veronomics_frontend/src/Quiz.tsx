@@ -212,8 +212,7 @@ const Quiz: React.FC = () => {
   // }
 
   const rootHTML = document.getElementsByTagName("html")[0];
-  const rootReactDiv = document.getElementById('root');
-
+  const rootReactDiv = document.getElementById("root");
 
   if (isDarkMode) {
     if (rootHTML && rootReactDiv) {
@@ -261,6 +260,17 @@ const Quiz: React.FC = () => {
                 <footer>— Gordon Moore</footer>
                 <div style={{ height: "30px" }}></div>
               </blockquote>
+              <p>
+                Start today by learning through trial and error with{" "}
+                <strong>Techonomics</strong> made by{" "}
+                <a
+                  href="http://orbitviewmedia.com/"
+                  target="_blank"
+                  style={{ textDecoration: "none" }}
+                >
+                  OrbitView
+                </a>
+              </p>
               <div className={isDarkMode ? "Light" : "Dark"}>
                 {/* Dynamic Categories */}
                 <div className="category-dropdown mb-3">
