@@ -262,7 +262,7 @@ const Quiz: React.FC = () => {
               </blockquote>
               <p>
                 Start today by learning through trial and error with{" "}
-                <strong>Techonomics</strong> made by{" "}
+                <strong>Quiztrepreneur</strong> made by{" "}
                 <a
                   href="http://orbitviewmedia.com/"
                   target="_blank"
